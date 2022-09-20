@@ -83,6 +83,8 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
+import axios from "axios";
+import API_KEY from "../../config/firebase";
 export default {
   name: "RegisterComponent",
   components: {
@@ -118,7 +120,22 @@ export default {
   },
   methods: {
     submitData(values) {
-      console.log(values);
+      const signUpObj = {
+        email: values.email,
+        password: values.password,
+        returnSecureToken: true,
+      };
+      axios
+        .post(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+          signUpObj
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     changeComponent(componentName) {
       this.$emit("change-component", { componentName });

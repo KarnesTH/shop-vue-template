@@ -16,10 +16,16 @@
       </div>
     </template>
     <template #rightCol>
-      <component
-        :is="componentName"
-        @change-component="changeComponent"
-      ></component>
+      <transition
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__fadeOut"
+        mode="out-in"
+      >
+        <component
+          :is="componentName"
+          @change-component="changeComponent"
+        ></component>
+      </transition>
     </template>
   </TheTwoColumnsLayout>
 </template>
