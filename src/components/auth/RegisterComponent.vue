@@ -7,13 +7,19 @@
       <h2>Jetzt registrieren</h2>
       <a class="text-vue" role="button">melden Sie sich mit Ihrem Konto an</a>
     </div>
-    <form class="mt-3">
+    <Form class="mt-3" @submit="submitData">
       <div class="my-2">
         <div class="col-md-8 offset-2">
           <label for="email" class="form-label"
             ><strong>E-Mail-Adresse</strong></label
           >
-          <input type="email" class="form-control" id="email" />
+          <Field
+            as="input"
+            name="email"
+            type="email"
+            class="form-control"
+            id="email"
+          />
         </div>
       </div>
       <div class="my-2">
@@ -21,7 +27,13 @@
           <label for="password" class="form-label"
             ><strong>Passwort</strong></label
           >
-          <input type="password" class="form-control" id="password" />
+          <Field
+            as="input"
+            name="password"
+            type="password"
+            class="form-control"
+            id="password"
+          />
         </div>
       </div>
       <div class="my-2">
@@ -29,7 +41,13 @@
           <label for="confirmPassword" class="form-label"
             ><strong>Passwort wiederholen</strong></label
           >
-          <input type="password" class="form-control" id="confirmPassword" />
+          <Field
+            as="input"
+            name="confirmPassword"
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+          />
         </div>
       </div>
       <div class="mt-4">
@@ -39,13 +57,23 @@
           </div>
         </div>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 
 <script>
+import { Form, Field } from "vee-validate";
 export default {
   name: "RegisterComponent",
+  components: {
+    Form,
+    Field,
+  },
+  methods: {
+    submitData(values) {
+      console.log(values);
+    },
+  },
 };
 </script>
 
