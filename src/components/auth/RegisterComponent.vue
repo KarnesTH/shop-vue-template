@@ -90,7 +90,7 @@
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import axios from "axios";
-import API_KEY from "../../config/firebase";
+import { API_KEY } from "../../config/firebase";
 export default {
   name: "RegisterComponent",
   components: {
@@ -152,6 +152,7 @@ export default {
           signUpObj
         )
         .then((res) => {
+          console.log(res);
           this.isLoading = false;
           this.changeComponent("login");
         })
