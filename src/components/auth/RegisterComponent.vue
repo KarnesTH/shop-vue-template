@@ -75,7 +75,10 @@
       <div class="mt-4">
         <div class="col-md-8 offset-2">
           <div class="d-grid">
-            <button class="btn bg-vue">Registrieren</button>
+            <button class="btn bg-vue">
+              <span v-if="!isLoading">Registrieren</span>
+              <span v-else class="spinner-border spinner-border-sm"></span>
+            </button>
           </div>
         </div>
       </div>
@@ -120,6 +123,7 @@ export default {
     return {
       schema,
       error: "",
+      isLoading: false,
     };
   },
   computed: {
@@ -135,6 +139,8 @@ export default {
   },
   methods: {
     submitData(values) {
+      this.isLoading = true;
+      this.error = "";
       const signUpObj = {
         email: values.email,
         password: values.password,
@@ -146,10 +152,12 @@ export default {
           signUpObj
         )
         .then((res) => {
-          console.log(res);
+          this.isLoading = false;
+          this.changeComponent("login");
         })
         .catch((err) => {
           this.error = err.response.data.error.message;
+          this.isLoading = false;
         });
     },
     changeComponent(componentName) {
