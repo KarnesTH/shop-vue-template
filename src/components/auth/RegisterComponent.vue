@@ -12,6 +12,9 @@
         >
       </p>
     </div>
+    <div class="alert alert-danger col-md-8 offset-2" v-if="error">
+      {{ errorDisplayText }}
+    </div>
     <Form
       class="mt-3"
       @submit="submitData"
@@ -116,7 +119,19 @@ export default {
     });
     return {
       schema,
+      error: "",
     };
+  },
+  computed: {
+    errorDisplayText() {
+      if (this.error) {
+        if (this.error.includes("EMAIL_EXISTS")) {
+          return "Die E-Mail Adresse existiert bereits";
+        }
+        return "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.";
+      }
+      return "";
+    },
   },
   methods: {
     submitData(values) {
@@ -134,7 +149,7 @@ export default {
           console.log(res);
         })
         .catch((err) => {
-          console.error(err);
+          this.error = err.response.data.error.message;
         });
     },
     changeComponent(componentName) {
