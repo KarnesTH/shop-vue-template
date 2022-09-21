@@ -72,8 +72,6 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
-import axios from "axios";
-import { API_KEY } from "../../config/firebase";
 export default {
   name: "LoginComponent",
   components: {
@@ -82,7 +80,7 @@ export default {
   },
   emits: {
     "change-component": (payload) => {
-      if (payload.componentName !== "login") {
+      if (payload.componentName !== "register") {
         return false;
       }
       return true;
@@ -123,22 +121,16 @@ export default {
     submitData(values) {
       this.isLoading = true;
       this.error = "";
-      const signInObj = {
-        email: values.email,
-        password: values.password,
-        returnSecureToken: true,
-      };
-      axios
-        .post(
-          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
-          signInObj
-        )
-        .then((res) => {
-          console.log(res);
+      this.$store
+        .dispatch("signin", {
+          email: values.email,
+          password: values.password,
+        })
+        .then(() => {
           this.isLoading = false;
         })
         .catch((err) => {
-          this.error = err.response.data.error.message;
+          this.error = err.message;
           this.isLoading = false;
         });
     },
