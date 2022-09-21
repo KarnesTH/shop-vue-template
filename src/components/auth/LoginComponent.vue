@@ -128,6 +128,7 @@ export default {
         })
         .then(() => {
           this.isLoading = false;
+          this.$router.push({ path: "/shop" });
         })
         .catch((err) => {
           this.error = err.message;
