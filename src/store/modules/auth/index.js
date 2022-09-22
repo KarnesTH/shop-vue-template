@@ -29,6 +29,11 @@ const actions = {
     return axios
       .post(url, authObj)
       .then((res) => {
+        const expiresIn = Number(res.data.expiresIn) * 1000;
+        const expireDate = new Date().getTime() + expiresIn;
+        localStorage.setItem("token", res.data.idToken);
+        localStorage.setItem("userId", res.data.localId);
+        localStorage.setItem("expiresIn", expireDate);
         context.commit("setUser", {
           userId: res.data.localId,
           token: res.data.idToken,
@@ -54,6 +59,15 @@ const actions = {
       mode: "signin",
     };
     return context.dispatch("auth", signInObj);
+  },
+  signout(context) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("expiresIn");
+    context.commit("setUser", {
+      token: null,
+      userId: null,
+    });
   },
 };
 const getters = {};
