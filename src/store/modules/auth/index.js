@@ -1,6 +1,8 @@
 import { API_KEY } from "../../../config/firebase";
 import axios from "axios";
 
+let timer;
+
 const state = {
   userId: null,
   token: null,
@@ -34,6 +36,9 @@ const actions = {
         localStorage.setItem("token", res.data.idToken);
         localStorage.setItem("userId", res.data.localId);
         localStorage.setItem("expiresIn", expireDate);
+        timer = setTimeout(() => {
+          context.dispach("autoSignout");
+        }, expireDate);
         context.commit("setUser", {
           userId: res.data.localId,
           token: res.data.idToken,
@@ -64,13 +69,19 @@ const actions = {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("expiresIn");
+    clearTimeout(timer);
     context.commit("setUser", {
       token: null,
       userId: null,
     });
   },
+  autoSignout(context) {
+    context.dispatch("signout");
+  },
 };
-const getters = {};
+const getters = {
+  isAuthenticated: (state) => !!state.token,
+};
 
 const authModule = {
   state,
